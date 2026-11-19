@@ -1,0 +1,22 @@
+web:
+  # Prometheus /metrics 监听地址
+  listen_address: ":9161"
+  telemetry_path: /metrics
+
+database:
+  # OMS Repository 连接串（go-ora 格式）。
+  # 生产建议留空，改用环境变量 OMS_DSN 注入，避免密码明文落盘：
+  #   export OMS_DSN="oracle://mon_exporter:******@oms-scan:1521/EMREP"
+  dsn: "oracle://mon_exporter:CHANGE_ME@oms-scan:1521/EMREP"
+  max_open_conns: 5
+  max_idle_conns: 2
+  # 单个 Scraper 查询超时
+  query_timeout: 30s
+
+# 采集器开关；留空表示全部启用，也可被命令行 --collect.<name> / --no-collect.<name> 覆盖
+collectors:
+  target: true    # 数据库目标状态、版本、OPEN incident
+  host: true      # 主机 CPU / 内存
+  disk: true      # 主机磁盘使用率（待补 SQL）
+  network: true  # 主机网卡流量（待补 SQL）
+  process: true   # 主机进程 CPU / 内存（待补 SQL）

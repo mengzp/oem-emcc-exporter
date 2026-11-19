@@ -1,0 +1,16 @@
+[Unit]
+Description=OEM EMCC Prometheus Exporter
+After=network.target
+
+[Service]
+Type=simple
+User=oemexporter
+# 连接串可从环境文件注入（OMS_DSN），避免写入配置文件明文密码
+EnvironmentFile=-/etc/oem-exporter/oem-exporter.env
+ExecStart=/usr/local/bin/oem-emcc-exporter -config.file /etc/oem-exporter/oem-exporter.yml
+Restart=on-failure
+RestartSec=10
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target
